@@ -1,24 +1,41 @@
+import { createBrowserRouter } from "react-router";
+import { AdminLayout } from "@/admin/layout/AdminLayout";
 import { AdminPage } from "@/admin/pages/AdminPage";
+import { HeroesLayout } from "@/heroes/layout/HeroesLayout";
 import { HeroPage } from "@/heroes/pages/hero/HeroPage";
 import { HomePage } from "@/heroes/pages/home/HomePage";
-import { SearchPage } from "@/heroes/pages/search/SearchPage";
-import { createBrowserRouter } from "react-router";
+import { lazy } from "react";
+// import { SearchPage } from "@/heroes/pages/search/SearchPage";
+
+const SearchPage = lazy(() => import("@/heroes/pages/search/SearchPage").then((module) => ({ default: module.SearchPage })));
 
 export const appRouter = createBrowserRouter([
     {
         path: "/",
-        element: <HomePage />
-    },
-    {
-        path: "/search",
-        element: <SearchPage />,
-    },
-    {
-        path: "/hero/:id",
-        element: <HeroPage />,
+        element: <HeroesLayout />,
+        children: [
+            {
+                index: true,
+                element: <HomePage />
+            },
+            {
+                path: "search",
+                element: <SearchPage />,
+            },
+            {
+                path: "heroes/1",
+                element: <HeroPage />,
+            },
+        ]
     },
     {
         path: "/admin",
-        element: <AdminPage />,
+        element: <AdminLayout />,
+        children: [
+            {
+                index: true,
+                element: <AdminPage />
+            },
+        ]
     },
 ])
