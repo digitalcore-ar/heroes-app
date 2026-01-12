@@ -1,4 +1,4 @@
-import { createContext, use, useEffect, useState, type PropsWithChildren } from "react";
+import { createContext, useEffect, useState, type PropsWithChildren } from "react";
 import type { Hero } from "../types/hero.interface";
 
 interface FavoriteHeroContext {

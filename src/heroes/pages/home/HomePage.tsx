@@ -10,13 +10,16 @@ import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
 import { getHeroesByPageAction } from "@/heroes/actions/get-heroes-by-page.action"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "react-router"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import { useHeroSumary } from "@/heroes/hooks/useHeroSumarry"
+import { FavoriteHeroContext } from "@/heroes/context/FavouriteHeroContext"
 
 
 // type TabsValue = "all" | "favorites" | "heroes" | "villains"
 
 export const HomePage = () => {
+
+    const { favoriteCount, favorites } = use(FavoriteHeroContext)
 
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -71,7 +74,7 @@ export const HomePage = () => {
                             return prev
                         })}>
                             <Heart className="h-4 w-4" />
-                            Favorites (3)
+                            Favorites ({favoriteCount})
                         </TabsTrigger>
                         <TabsTrigger value="heroes" onClick={() => setSearchParams((prev) => {
                             prev.set('tab', 'heroes')
@@ -94,7 +97,7 @@ export const HomePage = () => {
 
                     <TabsContent value="favorites">
                         {/* Mostrar favoritos */}
-                        <h1>Contenido del tab favorites</h1>
+                        <HeroeGrid heroes={favorites || []} />
                     </TabsContent>
 
                     <TabsContent value="heroes">
@@ -112,7 +115,11 @@ export const HomePage = () => {
                 {/* <HeroeGrid /> */}
 
                 {/* Pagination */}
-                <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
+                {
+                    selectedTab !== 'favorites' && (
+                        <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
+                    )
+                }
             </>
         </>
     )
