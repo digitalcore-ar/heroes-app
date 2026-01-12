@@ -23,7 +23,7 @@ export const appRouter = createBrowserRouter([
                 element: <SearchPage />,
             },
             {
-                path: "heroes/1",
+                path: "heroes/:id",
                 element: <HeroPage />,
             },
         ]
